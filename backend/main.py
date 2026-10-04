@@ -3,6 +3,7 @@ import json
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
+from backend.medicine_recommendations import get_medicine_recommendations
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
@@ -229,20 +230,83 @@ ADVISORIES = {
 }
 
 
+
 def get_advisory(label: str) -> dict:
+    normalized = "".join(
+        char.lower() for char in label if char.isalnum()
+    )
+
+    details = {
+        "bacterialspot": {
+            "problem": "Bacterial spot can cause dark, water-soaked leaf spots and yellowing.",
+            "cause": "A bacterial infection that can spread through infected material and splashing water.",
+            "treatment": "Avoid overhead watering, remove badly affected leaves when appropriate, and seek local agricultural guidance for confirmed cases.",
+        },
+        "earlyblight": {
+            "problem": "Early blight often causes brown spots, sometimes with concentric rings, especially on older leaves.",
+            "cause": "A fungal disease favored by suitable moisture and warm conditions.",
+            "treatment": "Remove badly affected leaves where appropriate, avoid splashing soil onto foliage, and improve airflow. Ask a local agricultural expert about suitable registered treatments.",
+        },
+        "lateblight": {
+            "problem": "Late blight can cause rapidly expanding dark lesions and serious damage to leaves.",
+            "cause": "A disease caused by a fungus-like organism that can spread quickly in cool, wet conditions.",
+            "treatment": "Inspect nearby plants promptly, avoid handling wet foliage, and seek urgent local agricultural advice about disease management.",
+        },
+        "leafmold": {
+            "problem": "Leaf mold may cause pale yellow patches on upper leaf surfaces and growth underneath.",
+            "cause": "A fungal disease associated with high humidity and poor airflow.",
+            "treatment": "Improve ventilation, reduce prolonged leaf wetness, and inspect both sides of leaves. Confirm the disease before choosing treatment.",
+        },
+        "septorialeafspot": {
+            "problem": "Septoria leaf spot produces small, dark-edged spots that can lead to yellowing and leaf loss.",
+            "cause": "A fungal disease that can spread through infected debris and splashing water.",
+            "treatment": "Remove affected debris where appropriate, avoid wetting foliage during watering, and use locally recommended management practices.",
+        },
+        "spidermites": {
+            "problem": "Spider mites can cause tiny pale speckles, leaf discoloration, and fine webbing.",
+            "cause": "Tiny plant-feeding pests that often thrive in hot, dry conditions.",
+            "treatment": "Inspect leaf undersides, check neighboring plants, and consider suitable integrated pest-management methods after confirming the pest.",
+        },
+        "targetspot": {
+            "problem": "Target spot can produce circular brown lesions, sometimes with ring-like patterns.",
+            "cause": "A fungal disease that can spread under favorable moisture conditions.",
+            "treatment": "Improve airflow, avoid prolonged leaf wetness, remove affected debris where appropriate, and seek local advice if symptoms spread.",
+        },
+        "mosaicvirus": {
+            "problem": "Mosaic virus may cause mottled leaf colors, distortion, and uneven plant growth.",
+            "cause": "A viral infection that may spread through infected plants or certain insect vectors.",
+            "treatment": "Confirm the diagnosis, clean tools, check for insect vectors, and follow local crop guidance. There is no universal cure for infected plants.",
+        },
+        "yellowleafcurlvirus": {
+            "problem": "Yellow leaf curl virus may cause upward leaf curling, yellowing, and stunted growth.",
+            "cause": "A viral disease commonly associated with whitefly transmission.",
+            "treatment": "Check for whiteflies, avoid moving potentially infected plant material, and seek local agricultural advice on disease and vector management.",
+        },
+        "healthy": {
+            "problem": "The model classified the leaf as healthy; this does not rule out every plant problem.",
+            "cause": "No supported disease pattern was identified by the model for this class.",
+            "treatment": "Continue balanced watering and crop care, inspect plants regularly, and monitor for new symptoms.",
+        },
+    }
+
     for key, advisory in ADVISORIES.items():
-        if key.lower() in label.lower():
-            return advisory
+        normalized_key = "".join(
+            char.lower() for char in key if char.isalnum()
+        )
+
+        if normalized_key in normalized:
+            extra = details.get(normalized_key, {})
+            return {**advisory, **extra}
 
     return {
-        "summary": (
-            "The model identified a class associated with a possible "
-            "plant disease or pest condition."
-        ),
+        "summary": "The model identified a possible plant disease or pest condition.",
+        "problem": "The predicted class needs further inspection.",
+        "cause": "The image prediction alone cannot establish the exact cause.",
+        "treatment": "Take a clear photo of the affected plant and seek local agricultural advice before applying a treatment.",
         "actions": [
-            "Inspect the leaf and the rest of the plant carefully.",
-            "Compare symptoms with trusted local agricultural resources.",
-            "Seek expert confirmation before applying a treatment.",
+            "Inspect the whole plant and nearby plants.",
+            "Compare symptoms with trusted agricultural resources.",
+            "Confirm the diagnosis before selecting a treatment.",
         ],
     }
 
@@ -340,6 +404,20 @@ async def predict(file: UploadFile = File(...)):
     confidence = float(probabilities[predicted_index])
 
     advisory = get_advisory(predicted_label)
+        # Medicine recommendations are shown only for confident predictions.
+    if confidence >= 0.60:
+        medicine_recommendations = get_medicine_recommendations(
+            predicted_label
+        )
+    else:
+        medicine_recommendations = {
+            "status": "uncertain_prediction",
+            "message": (
+                "Medicine recommendations are withheld because "
+                "the disease prediction is uncertain."
+            ),
+            "medicines": [],
+        }
 
     # This is a display threshold, not a calibrated probability guarantee.
     if confidence < 0.60:
@@ -397,6 +475,7 @@ async def predict(file: UploadFile = File(...)):
         "confidence": round(confidence, 4),
         "confidence_percent": round(confidence * 100, 2),
         "advisory": advisory,
+        "medicine_recommendations": medicine_recommendations,
         "message": message,
         "disclaimer": (
             "Predictions can be wrong, especially for real-world images "
@@ -929,6 +1008,35 @@ async def generate_prediction_report(file: UploadFile = File(...)):
     for action in advisory.get("actions", []):
         story.append(
             Paragraph(f"&bull; {escape(str(action))}", body_style)
+        )
+
+    # Additional disease information
+    problem = advisory.get("problem")
+    cause = advisory.get("cause")
+    treatment = advisory.get("treatment")
+
+    if problem:
+        story.append(
+            Paragraph("Understanding the Problem", heading_style)
+        )
+        story.append(
+            Paragraph(escape(str(problem)), body_style)
+        )
+
+    if cause:
+        story.append(
+            Paragraph("Possible Cause", heading_style)
+        )
+        story.append(
+            Paragraph(escape(str(cause)), body_style)
+        )
+
+    if treatment:
+        story.append(
+            Paragraph("Recommended Treatment &amp; Care", heading_style)
+        )
+        story.append(
+            Paragraph(escape(str(treatment)), body_style)
         )
 
     story.append(Paragraph("Model Assessment", heading_style))

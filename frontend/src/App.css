@@ -918,3 +918,1055 @@ html {
     font-size: 11px;
   }
 }
+
+
+/* LeafGuard AI — responsive statistics cards */
+.stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 1100px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* LeafGuard AI — polished statistics cards */
+.stats-grid .stat-card {
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left !important;
+  min-height: 205px;
+}
+
+.stats-grid .stat-card > p,
+.stats-grid .stat-card > h3,
+.stats-grid .stat-card > .stat-note {
+  width: 100%;
+  text-align: left !important;
+}
+
+.stats-grid .stat-card > p {
+  margin-top: 0;
+  margin-bottom: 7px;
+}
+
+.stats-grid .stat-card > h3 {
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  margin-bottom: 9px;
+}
+
+.stats-grid .stat-card > .stat-note {
+  line-height: 1.6;
+}
+
+/* LeafGuard AI — premium hero image interaction */
+.leaf-art {
+  transition: transform 250ms ease, box-shadow 250ms ease;
+}
+
+.leaf-art:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 26px 55px rgba(25, 72, 37, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaf-art {
+    transition: none;
+  }
+
+  .leaf-art:hover {
+    transform: none;
+  }
+}
+
+/* LeafGuard AI — interactive upload experience */
+.upload-area {
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.upload-area:hover {
+  background: #edf8ee;
+  border-color: #4b9e61;
+  box-shadow: 0 0 0 4px rgba(75, 158, 97, 0.08);
+}
+
+.upload-area:focus-within {
+  outline: 3px solid rgba(43, 135, 72, 0.3);
+  outline-offset: 3px;
+}
+
+.analyze-button:focus-visible,
+.reset-button:focus-visible,
+.report-button:focus-visible,
+.export-button:focus-visible,
+.primary-link:focus-visible {
+  outline: 3px solid #78bd86;
+  outline-offset: 3px;
+}
+
+/* LeafGuard AI — refined analysis results */
+.result-panel {
+  position: relative;
+  overflow: hidden;
+  border-color: #d9e9da;
+  box-shadow: 0 14px 36px rgba(24, 60, 34, 0.06);
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 17px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e5eee4;
+}
+
+.result-title .eyebrow {
+  margin-bottom: 7px;
+}
+
+.result-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  color: #21834b;
+  background: #eaf7eb;
+  border: 1px solid #d9efdc;
+  border-radius: 14px;
+  font-size: 22px;
+}
+
+.result-content > h2 {
+  color: #173624;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.result-content .lg-gradcam-image {
+  padding: 8px;
+  background: #f5faf4;
+  border-color: #dce9da;
+  border-radius: 16px;
+}
+
+.result-content .lg-gradcam {
+  margin-top: 25px;
+  padding-top: 22px;
+  border-top: 1px solid #e3ece1;
+}
+
+@media (max-width: 760px) {
+  .result-title {
+    gap: 10px;
+  }
+
+  .result-content > h2 {
+    font-size: 23px;
+  }
+}
+
+/* LeafGuard AI — process card refinement */
+.process-grid article {
+  position: relative;
+  border: 1px solid #deeadc;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 24px rgba(25, 65, 35, 0.04);
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.process-grid article:hover {
+  transform: translateY(-4px);
+  border-color: #a8d5ad;
+  box-shadow: 0 16px 32px rgba(25, 65, 35, 0.09);
+}
+
+.process-grid article > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid #d5ebd5;
+  border-radius: 10px;
+  background: #edf8ed;
+  color: #176638;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .process-grid article {
+    transition: none;
+  }
+
+  .process-grid article:hover {
+    transform: none;
+  }
+}
+
+/* LeafGuard AI — responsive navigation and header polish */
+@media (max-width: 760px) {
+  .sidebar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+  }
+
+  .brand {
+    flex: 1 0 100%;
+    margin: 0;
+    padding: 4px 2px 10px;
+  }
+
+  .sidebar nav {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .sidebar .nav-link {
+    flex: 0 1 auto;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 9px 11px;
+    border-radius: 10px;
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .main-content {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    padding: 22px 16px 32px;
+  }
+
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .topbar h1 {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: clamp(23px, 6vw, 30px);
+  }
+
+  .welcome-banner,
+  .stats-grid,
+  .analyzer-grid,
+  .process-grid {
+    min-width: 0;
+  }
+}
+
+/* LeafGuard AI — compact mobile dashboard */
+@media (max-width: 760px) {
+  .main-content {
+    padding: 18px 14px 28px;
+  }
+
+  .topbar {
+    margin-bottom: 18px;
+  }
+
+  .welcome-banner {
+    gap: 18px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .welcome-copy h2 {
+    font-size: clamp(29px, 7.5vw, 36px);
+    line-height: 1.08;
+    letter-spacing: -1.2px;
+  }
+
+  .welcome-copy p {
+    margin-top: 12px;
+    line-height: 1.65;
+  }
+
+  .leaf-art {
+    min-height: 160px;
+    max-height: 200px;
+    border-radius: 16px;
+  }
+
+  .stats-grid {
+    margin-top: 20px;
+  }
+}
+
+/* LeafGuard AI — refined mobile hero */
+@media (max-width: 760px) {
+  .topbar {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .welcome-banner {
+    padding: 18px;
+    gap: 16px;
+    border-radius: 18px;
+  }
+
+  .welcome-copy h2 {
+    font-size: clamp(27px, 7vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -1.3px;
+  }
+
+  .welcome-copy p {
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .welcome-copy .analyze-button {
+    min-height: 46px;
+    padding: 12px 18px;
+  }
+
+  .leaf-art {
+    min-height: 145px;
+    max-height: 170px;
+  }
+}
+
+/* LeafGuard AI — polished prediction history */
+#prediction-history .history-header {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 24px;
+}
+
+#prediction-history .history-topline {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+#prediction-history .history-heading-copy {
+  min-width: 0;
+}
+
+#prediction-history .history-heading-copy h2 {
+  margin: 6px 0 8px;
+  color: #173624;
+  font-size: clamp(27px, 3vw, 36px);
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+#prediction-history .history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+#prediction-history .history-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+#prediction-history .history-search,
+#prediction-history .history-filter {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 300px;
+  min-height: 46px;
+  margin: 0;
+  padding: 11px 14px;
+  border: 1px solid #d8e6d8;
+  border-radius: 12px;
+  background: #fff;
+  color: #203b2b;
+  font: inherit;
+}
+
+#prediction-history .history-search:focus,
+#prediction-history .history-filter:focus {
+  outline: 3px solid rgba(39, 131, 76, 0.16);
+  border-color: #27834c;
+}
+
+#prediction-history > .panel {
+  padding: 18px;
+  border: 1px solid #deeadc;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(25, 65, 35, 0.045);
+}
+
+#prediction-history table {
+  min-width: 650px;
+}
+
+#prediction-history th {
+  padding: 15px 16px !important;
+  background: #f2f7f1;
+  color: #526b59;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+#prediction-history td {
+  padding: 16px !important;
+  border-bottom: 1px solid #e8efe6;
+  color: #526258;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#prediction-history td strong {
+  color: #173624;
+}
+
+#prediction-history td small {
+  display: inline-block;
+  max-width: 280px;
+  margin-top: 5px;
+  color: #829087;
+  overflow-wrap: anywhere;
+}
+
+#prediction-history tbody tr:hover {
+  background: #f5faf4;
+}
+
+#prediction-history tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  #prediction-history .history-topline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  #prediction-history .history-actions {
+    width: 100%;
+  }
+
+  #prediction-history .history-actions button {
+    flex: 1 1 auto;
+  }
+
+  #prediction-history .history-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #prediction-history .history-search,
+  #prediction-history .history-filter {
+    max-width: none;
+  }
+
+  #prediction-history > .panel {
+    padding: 10px;
+  }
+}
+
+/* LeafGuard AI — compact, polished history table */
+#prediction-history table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+#prediction-history thead th {
+  padding: 14px 18px !important;
+  white-space: nowrap;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+#prediction-history tbody td {
+  padding: 13px 18px !important;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+
+#prediction-history tbody tr {
+  transition: background-color 160ms ease;
+}
+
+#prediction-history tbody tr:nth-child(even) {
+  background: #f8fbf7;
+}
+
+#prediction-history tbody tr:hover {
+  background: #edf7ed;
+}
+
+#prediction-history tbody td:first-child {
+  width: 44%;
+  overflow-wrap: anywhere;
+}
+
+#prediction-history tbody td:first-child strong {
+  display: inline-block;
+  margin-bottom: 3px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+#prediction-history tbody td:nth-child(2),
+#prediction-history tbody td:nth-child(3),
+#prediction-history tbody td:nth-child(4) {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+#prediction-history tbody td:nth-child(3) {
+  color: #287747;
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  #prediction-history table {
+    min-width: 650px;
+  }
+
+  #prediction-history thead th,
+  #prediction-history tbody td {
+    padding: 12px !important;
+  }
+}
+
+/* Fix history table horizontal overflow */
+#prediction-history {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+#prediction-history .history-table-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+#prediction-history table {
+  width: 100%;
+  min-width: 650px;
+}
+
+.main-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 760px) {
+  #prediction-history .history-table-wrapper {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Prediction history status badges */
+#prediction-history .history-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+#prediction-history tbody td:nth-child(3) .history-status-badge.is-predicted {
+  color: #17683a;
+  background: #e9f7ed;
+  border-color: #ccebd5;
+}
+
+#prediction-history tbody td:nth-child(3) .history-status-badge.is-uncertain {
+  color: #92520b;
+  background: #fff4dc;
+  border-color: #f2d79e;
+}
+
+.history-status-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* Keep long filenames on one line */
+#prediction-history tbody td:first-child {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+#prediction-history tbody td:first-child > *:not(strong) {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* LeafGuard AI — analyzer workspace polish */
+#analyzer .analyzer-grid {
+  gap: 24px;
+  align-items: stretch;
+}
+
+#analyzer .panel {
+  min-width: 0;
+  padding: 28px;
+  border: 1px solid #dceadd;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 35px rgba(25, 75, 43, 0.05);
+}
+
+#analyzer .upload-area {
+  border: 2px dashed #b7d9bd;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #f4faf4, #eaf5eb);
+  transition: border-color 0.2s ease,
+              background 0.2s ease;
+}
+
+#analyzer .upload-area:hover {
+  border-color: #25834b;
+  background: #edf8ee;
+}
+
+#analyzer .panel h3,
+#analyzer .panel h4 {
+  color: #173d29;
+  letter-spacing: -0.4px;
+}
+
+#analyzer .panel p {
+  line-height: 1.7;
+}
+
+@media (max-width: 760px) {
+  #analyzer .analyzer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  #analyzer .panel {
+    padding: 18px;
+    border-radius: 20px;
+  }
+}
+/* Image Workspace improvements */
+.analyzer-grid {
+  margin-top: 20px;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.analyzer-grid > .panel {
+  min-width: 0;
+  height: 100%;
+}
+
+.upload-area {
+  min-height: 240px;
+}
+
+@media (max-width: 760px) {
+  .analyzer-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .analyzer-grid > .panel {
+    width: 100%;
+  }
+}
+
+/* Professional dashboard header */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.topbar > div:first-child {
+  text-align: left;
+}
+
+.topbar > div:first-child > p {
+  margin: 0 0 10px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  color: #27864b;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  font-weight: 800;
+  color: #153b29;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .topbar h1 {
+    font-size: clamp(26px, 6vw, 34px);
+    letter-spacing: -1px;
+  }
+}
+/* Align Image Workspace heading */
+#analyzer .section-heading {
+  text-align: left;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#analyzer .section-heading > div {
+  text-align: left;
+  margin-left: 0;
+}
+
+#analyzer .section-heading h2,
+#analyzer .section-heading p {
+  text-align: left;
+  margin-left: 0;
+}
+
+@media (max-width: 760px) {
+  #analyzer .section-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* Align Prediction History heading */
+#prediction-history .section-heading {
+  text-align: left;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#prediction-history .section-heading > div {
+  text-align: left;
+  margin-left: 0;
+}
+
+#prediction-history .section-heading h2,
+#prediction-history .section-heading p {
+  text-align: left;
+  margin-left: 0;
+}
+
+@media (max-width: 760px) {
+  #prediction-history .section-heading {
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+/* Fix Prediction History heading alignment */
+.history-header {
+  text-align: left !important;
+}
+
+.history-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.history-heading-copy {
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+.history-heading-copy .eyebrow,
+.history-heading-copy h2,
+.history-heading-copy .section-description {
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .history-topline {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
+
+
+/* LeafGuard AI — Compact Professional Footer */
+.lg-footer {
+  margin-top: 12px;
+  padding: 10px 0 6px;
+  border-top: 1px solid #dce8dc;
+  color: #183b2a;
+}
+
+.lg-footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 8px;
+}
+
+.lg-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lg-footer-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: #197743;
+  color: #fff;
+  font-size: 21px;
+}
+
+.lg-footer-brand h3,
+.lg-footer-credit h3 {
+  margin: 0;
+  color: #183b2a;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.lg-footer-brand h3 span {
+  color: #27894b;
+}
+
+.lg-footer-brand p,
+.lg-footer-credit p {
+  margin: 4px 0 0;
+  color: #6b7d70;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.lg-footer-credit {
+  text-align: right;
+}
+
+.lg-footer-label {
+  display: block;
+  margin-bottom: 5px;
+  color: #27894b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.lg-footer-credit h3 {
+  font-size: 17px;
+  letter-spacing: -0.3px;
+}
+
+.lg-footer-credit a {
+  display: inline-block;
+  margin-top: 6px;
+  color: #197743;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.lg-footer-credit a:hover {
+  color: #105a32;
+  text-decoration: underline;
+}
+
+.lg-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px 16px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e9df;
+  color: #718174;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .lg-footer {
+    margin-top: 16px;
+    padding: 12px 0 8px;
+  }
+
+  .lg-footer-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .lg-footer-credit {
+    text-align: left;
+  }
+
+  .lg-footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+.compact-footer {
+  padding: 8px 18px !important;
+  margin-top: 10px !important;
+  margin-bottom: 0 !important;
+  min-height: 0 !important;
+}
+
+.compact-footer > div {
+  min-height: 0;
+}
+
+.main-content {
+  padding-bottom: 8px !important;
+}
+
+/* Improve Grad-CAM layout */
+.lg-gradcam {
+  max-width: 1000px;
+  margin: 24px auto 0;
+}
+
+.lg-gradcam-image {
+  display: block;
+  width: min(100%, 520px);
+  max-height: 520px;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+/* Align Recent Activity with the dashboard content */
+.history-header {
+  padding-left: clamp(20px, 6vw, 90px) !important;
+  padding-right: clamp(20px, 6vw, 90px) !important;
+  box-sizing: border-box;
+}
+
+/* Keep Grad-CAM and Prediction History spacing consistent */
+.lg-gradcam {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Polished mobile footer */
+
+/* Center every footer section on mobile */
+@media (max-width: 600px) {
+  .compact-footer {
+    grid-template-columns: minmax(0, 1fr) !important;
+    justify-items: center !important;
+    gap: 18px !important;
+    padding: 18px 12px !important;
+    text-align: center !important;
+  }
+
+  .compact-footer > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    justify-self: center !important;
+  }
+
+  .compact-footer > div:first-child {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .compact-footer > div:nth-child(2) > div {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .compact-footer > div:nth-child(3) {
+    text-align: center !important;
+  }
+}
+
+/* Keep both analyzer panels the same height */
+.analyzer-grid {
+  align-items: stretch !important;
+}
+.analyzer-grid > .upload-panel,
+.analyzer-grid > .result-panel {
+  align-self: stretch !important;
+  height: auto !important;
+  min-width: 0;
+  box-sizing: border-box;}

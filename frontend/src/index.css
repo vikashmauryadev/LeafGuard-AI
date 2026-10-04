@@ -109,3 +109,18 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* Fix excessive blank space in the upload panel */
+.analyzer-grid {
+  align-items: start !important;
+}
+
+.analyzer-grid > .upload-panel {
+  height: fit-content !important;
+  min-height: 0 !important;
+  align-self: start !important;
+}
+
+.upload-panel .upload-area {
+  min-height: 250px;
+}

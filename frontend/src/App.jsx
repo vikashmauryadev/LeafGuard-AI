@@ -152,6 +152,8 @@ function App() {
       }
 
       setResult(data);
+      await fetchHistory();
+      await fetchStats();
 
       // Generate the visual explanation separately so it cannot break prediction.
       try {
@@ -191,7 +193,7 @@ function App() {
       setLoading(false);
     }
   }
-    
+
   async function handleDownloadReport() {
     if (!image || reportLoading) {
       return;
@@ -254,10 +256,10 @@ function App() {
     } finally {
       setReportLoading(false);
     }
-  
-    
-  
-  
+
+
+
+
   }
 
   const confidence = Math.min(
@@ -286,9 +288,9 @@ function App() {
 
     return matchesSearch && matchesStatus;
   });
-const visibleHistory = showAllHistory
-  ? filteredHistory
-  : filteredHistory.slice(0, 10);
+  const visibleHistory = showAllHistory
+    ? filteredHistory
+    : filteredHistory.slice(0, 10);
   return (
     <div className="app-shell">
       <style>{`
@@ -395,6 +397,66 @@ const visibleHistory = showAllHistory
           border: 1px solid #e6ebe6;
           background: #f7faf7;
         }
+.lg-insight-card {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #dce9dc;
+  border-radius: 14px;
+  background: #f7faf7;
+}
+
+.lg-insight-card h4 {
+  margin: 0 0 8px;
+  color: #173d2b;
+  text-align: center;
+}
+
+.lg-insight-description {
+  margin: 0 0 16px;
+  color: #6b756e;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.lg-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.lg-insight-item {
+  padding: 13px;
+  border: 1px solid #e3ebe3;
+  border-radius: 11px;
+  background: #ffffff;
+}
+
+.lg-insight-item span {
+  color: #27834c;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.lg-insight-item h5 {
+  margin: 8px 0;
+  color: #244b34;
+  font-size: 13px;
+}
+
+.lg-insight-item p {
+  margin: 0;
+  color: #6b756e;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .lg-insight-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
         .lg-reset {
           margin-top: 12px;
           border: 0;
@@ -509,10 +571,10 @@ const visibleHistory = showAllHistory
               Analyze a plant leaf image using a trained machine learning
               model and review the associated plant-care guidance.
             </p>
-            
-<a className="primary-link" href="#analyzer">
-  Analyze a Leaf <span aria-hidden="true">→</span>
-</a>
+
+            <a className="primary-link" href="#analyzer">
+              Analyze a Leaf <span aria-hidden="true">→</span>
+            </a>
           </div>
           <div className="leaf-art" aria-hidden="true">
             <div className="leaf-circle circle-one" />
@@ -596,8 +658,8 @@ const visibleHistory = showAllHistory
           </div>
 
           <div className="analyzer-grid" id="analyzer">
-  <article className="panel upload-panel">
-    <h3>Upload leaf image</h3>
+            <article className="panel upload-panel">
+              <h3>Upload leaf image</h3>
               <p className="muted">
                 Keep the leaf in focus and avoid blurry photographs.
               </p>
@@ -656,6 +718,73 @@ const visibleHistory = showAllHistory
                 The selected image is sent to your configured backend for
                 analysis.
               </p>
+
+              {result && (
+                <section className="lg-gradcam" aria-label="Visual explanation">
+                  <h4>Visual explanation (Grad-CAM)</h4>
+                  <p>
+                    The overlay highlights image regions that influenced the
+                    model's prediction. It is an explanation aid, not proof
+                    that a specific region contains disease.
+                  </p>
+
+                  {gradcamUrl ? (
+                    <img
+                      className="lg-gradcam-image"
+                      src={gradcamUrl}
+                      alt="Grad-CAM heatmap overlay for the analyzed leaf"
+                    />
+                  ) : explanationError ? (
+                    <p className="lg-error" role="alert">
+                      Grad-CAM unavailable: {explanationError}
+                    </p>
+                  ) : (
+                    <p role="status">Generating visual explanation...</p>
+                  )}
+                </section>
+              )}
+
+              {result && (
+                <section className="lg-insight-card">
+                  <h4>Plant Health Insights</h4>
+                  <p className="lg-insight-description">
+                    Use these checks alongside the AI prediction.
+                  </p>
+
+                  <div className="lg-insight-grid">
+                    <div className="lg-insight-item">
+                      <span>01</span>
+                      <h5>Check Symptoms</h5>
+                      <p>
+                        Compare visible spots, discoloration and leaf damage
+                        with the predicted disease.
+                      </p>
+                    </div>
+
+                    <div className="lg-insight-item">
+                      <span>02</span>
+                      <h5>Review Grad-CAM</h5>
+                      <p>
+                        Explore the highlighted image regions, but remember
+                        they do not confirm disease by themselves.
+                      </p>
+                    </div>
+
+                    <div className="lg-insight-item">
+                      <span>03</span>
+                      <h5>Take Action Carefully</h5>
+                      <p>
+                        Retake unclear images and seek local agricultural
+                        guidance before treatment.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+
+
+
             </article>
 
             <article className="panel result-panel" aria-live="polite">
@@ -713,6 +842,34 @@ const visibleHistory = showAllHistory
                       "Review the predicted class alongside visible symptoms."}
                   </p>
 
+                  {(result.advisory?.problem ||
+                    result.advisory?.cause ||
+                    result.advisory?.treatment) && (
+                      <div className="lg-advisory">
+                        {result.advisory?.problem && (
+                          <section>
+                            <h4>Understanding the Problem</h4>
+                            <p>{result.advisory.problem}</p>
+                          </section>
+                        )}
+
+                        {result.advisory?.cause && (
+                          <section>
+                            <h4>Possible Cause</h4>
+                            <p>{result.advisory.cause}</p>
+                          </section>
+                        )}
+
+                        {result.advisory?.treatment && (
+                          <section>
+                            <h4>Recommended Treatment & Care</h4>
+                            <p>{result.advisory.treatment}</p>
+                          </section>
+                        )}
+                      </div>
+                    )}
+
+
                   {isUncertain && (
                     <div className="lg-warning" role="status">
                       <strong>Low-confidence result</strong>
@@ -732,47 +889,105 @@ const visibleHistory = showAllHistory
                     </ul>
                   </div>
 
+                  <div className="lg-advisory" style={{ marginTop: 20 }}>
+                    <h4>Plant Medicine Recommendations</h4>
+                    {(result.medicine_recommendations?.medicines || []).map(
+                      (medicine) => (
+                        <div className="lg-advisory" key={medicine.id}>
+                          {medicine.product_image_url && (
+                            <img
+                              src={medicine.product_image_url}
+                              alt={medicine.name}
+                              style={{
+                                width: 120,
+                                height: 120,
+                                objectFit: "contain",
+                                borderRadius: 12,
+                              }}
+                            />
+                          )}
+
+                          <h3>{medicine.name}</h3>
+                          <p>
+                            <strong>Active ingredient:</strong>{" "}
+                            {medicine.active_ingredient || "Not provided"}
+                          </p>
+                          <p>
+                            <strong>Suitable crops:</strong>{" "}
+                            {(medicine.crops || []).join(", ") || "Not provided"}
+                          </p>
+                          <p>
+                            <strong>Target diseases:</strong>{" "}
+                            {(medicine.diseases || []).join(", ") || "Not provided"}
+                          </p>
+                          <p>
+                            <strong>Dosage:</strong>{" "}
+                            {medicine.dosage || "Check the verified product label"}
+                          </p>
+                          <p>
+                            <strong>Application:</strong>{" "}
+                            {medicine.application_method || "Check the product label"}
+                          </p>
+
+                          {medicine.label_url && (
+                            <a
+                              href={medicine.label_url}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              View product label
+                            </a>
+                          )}
+                        </div>
+                      )
+                    )}
+
+                    {result.medicine_recommendations?.status === "no_medicine_needed" ? (
+                      <p>
+                        No pesticide is recommended for this healthy classification.
+                        Continue routine monitoring and crop care.
+                      </p>
+                    ) : result.medicine_recommendations?.status === "uncertain_prediction" ||
+                      isUncertain ? (
+                      <p role="status">
+                        Medicine recommendations are withheld because the prediction
+                        is uncertain. Try a clearer image or consult an agricultural expert.
+                      </p>
+                    ) : (
+                      <p>
+                        {result.medicine_recommendations?.message ||
+                          "No verified, crop-specific medicine recommendation is available yet."}
+                      </p>
+                    )}
+
+                    <p style={{ fontSize: 13, marginTop: 12 }}>
+                      Always verify the product label, crop, disease, dosage, and safety
+                      precautions with a qualified agricultural expert before applying
+                      any pesticide.
+                    </p>
+                  </div>
+
                   <p className="lg-disclaimer">
                     {result.disclaimer ||
                       "AI screening is not a definitive plant disease diagnosis."}
                   </p>
-<div style={{ marginTop: 18 }}>
-  <button
-    type="button"
-    className="analyze-button"
-    onClick={handleDownloadReport}
-    disabled={reportLoading || !image}
-  >
-    {reportLoading ? "Generating PDF..." : "Download PDF Report"}
-  </button>
+                  <div style={{ marginTop: 18 }}>
+                    <button
+                      type="button"
+                      className="analyze-button"
+                      onClick={handleDownloadReport}
+                      disabled={reportLoading || !image}
+                    >
+                      {reportLoading ? "Generating PDF..." : "Download PDF Report"}
+                    </button>
 
-  {reportError && (
-    <p className="lg-error" role="alert">
-      {reportError}
-    </p>
-  )}
-</div>
-                  <section className="lg-gradcam" aria-label="Visual explanation">
-                    <h4>Visual explanation (Grad-CAM)</h4>
-                    <p>
-                      The overlay highlights image regions that influenced the
-                      model's prediction. It is an aid to interpretation, not
-                      proof that a specific region contains disease.
-                    </p>
-                    {gradcamUrl ? (
-                      <img
-                        className="lg-gradcam-image"
-                        src={gradcamUrl}
-                        alt="Grad-CAM heatmap overlay for the analyzed leaf"
-                      />
-                    ) : explanationError ? (
+                    {reportError && (
                       <p className="lg-error" role="alert">
-                        Grad-CAM unavailable: {explanationError}
+                        {reportError}
                       </p>
-                    ) : (
-                      <p role="status">Generating visual explanation...</p>
                     )}
-                  </section>
+                  </div>
+
                 </div>
               ) : (
                 <div className="empty-result">
@@ -797,72 +1012,69 @@ const visibleHistory = showAllHistory
           </div>
         </section>
 
+
+
+
         <section
           className="how-section"
           id="prediction-history"
           style={{ marginBottom: 40 }}
         >
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">RECENT ACTIVITY</p>
-              <h2>Prediction History</h2>
-              <p className="section-description">
-                Review your recently analyzed plant leaf images.
-              </p>
+
+          <div className="history-header">
+            <div className="history-topline">
+              <div className="history-heading-copy">
+                <p className="eyebrow">RECENT ACTIVITY</p>
+                <h2>Prediction History</h2>
+                <p className="section-description">
+                  Review your recently analyzed plant leaf images.
+                </p>
+              </div>
+
+              <div className="history-actions">
+                <button
+                  type="button"
+                  className="analyze-button"
+                  onClick={fetchHistory}
+                  disabled={historyLoading}
+                >
+                  {historyLoading ? "Loading..." : "Refresh history"}
+                </button>
+
+                <button
+                  type="button"
+                  className="analyze-button history-export-button"
+                  onClick={() => {
+                    window.location.href = `${API_URL}/history/export`;
+                  }}
+                >
+                  Export CSV
+                </button>
+              </div>
+            </div>
+
+            <div className="history-filters">
               <input
-  type="text"
-  placeholder="Search disease or filename..."
-  value={historySearch}
-  onChange={(event) => setHistorySearch(event.target.value)}
-  style={{
-    width: "100%",
-    maxWidth: 350,
-    padding: "12px",
-    marginTop: 12,
-    border: "1px solid #d5ddd6",
-    borderRadius: 8,
-    fontSize: 14,
-  }}
-/>
+                className="history-search"
+                type="text"
+                placeholder="Search disease or filename..."
+                value={historySearch}
+                onChange={(event) => setHistorySearch(event.target.value)}
+              />
+
               <select
+                className="history-filter"
                 aria-label="Filter prediction history by status"
                 value={historyStatus}
                 onChange={(event) => setHistoryStatus(event.target.value)}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  maxWidth: 350,
-                  padding: "12px",
-                  marginTop: 10,
-                  border: "1px solid #d5ddd6",
-                  borderRadius: 8,
-                  fontSize: 14,
-                  background: "#fff",
-                }}
               >
                 <option value="all">All predictions</option>
                 <option value="predicted">AI predictions</option>
                 <option value="uncertain">Needs review</option>
               </select>
             </div>
-
-            <button
-              type="button"
-              className="analyze-button"
-              onClick={fetchHistory}
-              disabled={historyLoading}
-            >
-              {historyLoading ? "Loading..." : "Refresh history"}
-            </button>
-            <button
-  type="button"
-  onClick={() => {
-    window.location.href = `${API_URL}/history/export`;
-  }}
->
-  Export CSV
-</button>
           </div>
+
 
           {historyError && (
             <p className="lg-error" role="alert">
@@ -909,9 +1121,17 @@ const visibleHistory = showAllHistory
                       </td>
 
                       <td style={{ padding: 12 }}>
-                        {item.status === "uncertain"
-                          ? "Needs review"
-                          : "AI prediction"}
+                        <span
+                          className={`history-status-badge ${item.status === "uncertain"
+                            ? "is-uncertain"
+                            : "is-predicted"
+                            }`}
+                        >
+                          <span className="history-status-dot" aria-hidden="true" />
+                          {item.status === "uncertain"
+                            ? "Needs review"
+                            : "AI prediction"}
+                        </span>
                       </td>
 
                       <td style={{ padding: 12 }}>
@@ -920,7 +1140,7 @@ const visibleHistory = showAllHistory
                           : "—"}
                       </td>
                     </tr>
-                  ))} 
+                  ))}
                 </tbody>
               </table>                {filteredHistory.length > 10 && (
                 <div style={{ textAlign: "center", marginTop: 16 }}>
@@ -935,9 +1155,9 @@ const visibleHistory = showAllHistory
                   </button>
                 </div>
               )}
-            </div> 
-               
-            
+            </div>
+
+
           )}
         </section>
 
@@ -965,10 +1185,155 @@ const visibleHistory = showAllHistory
           </div>
         </section>
 
-        <footer>
-          <span>LeafGuard AI</span>
-          <span>ML-assisted screening · Not a definitive diagnosis</span>
+
+
+        <footer
+          className="compact-footer"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1.4fr 1fr",
+            alignItems: "start",
+            gap: "12px",
+            padding: "3px 18px",
+            marginTop: "12px",
+            marginBottom: "0",
+            borderTop: "1px solid #dce9dc",
+            background: "#f8fbf7",
+            borderRadius: "12px",
+            color: "#52665a",
+            fontSize: "12px",
+          }}
+        >
+          {/* Brand */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div
+              style={{
+                width: "38px",
+                height: "38px",
+                borderRadius: "11px",
+                background: "#187343",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 4C11 4 5 7 5 14a6 6 0 0 0 6 6c7 0 9-8 9-16Z" />
+                <path d="M3 21c3-6 7-9 12-12" />
+              </svg>
+            </div>
+
+
+            <div style={{ textAlign: "left" }}>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: 800,
+                  lineHeight: 1.3,
+                  color: "#173d2b",
+                  margin: 0
+                }}
+              >
+                LeafGuard <span style={{ color: "#21864c" }}>AI</span>
+              </div>
+
+              <div
+                style={{
+                  marginTop: "4px",
+                  color: "#758579",
+                  fontSize: "11px",
+                  lineHeight: 1.4
+                }}
+              >
+                Smart Plant Health Screening
+              </div>
+            </div>
+          </div>
+
+          {/* Technology logos */}
+          <div style={{ textAlign: "center" }}>
+            <div
+              style={{
+                fontSize: "10px",
+                fontWeight: 800,
+                letterSpacing: "1.4px",
+                color: "#27834b",
+                marginBottom: "9px",
+              }}
+            >
+              BUILT WITH
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "15px",
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                { name: "React", logo: "react/react-original.svg" },
+                { name: "Vite", logo: "vitejs/vitejs-original.svg" },
+                { name: "Python", logo: "python/python-original.svg" },
+                { name: "FastAPI", logo: "fastapi/fastapi-original.svg" },
+                { name: "TensorFlow", logo: "tensorflow/tensorflow-original.svg" },
+                { name: "SQLite", logo: "sqlite/sqlite-original.svg" },
+              ].map((tech) => (
+                <div
+                  key={tech.name}
+                  title={tech.name}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "3px",
+                  }}
+                >
+                  <img
+                    src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${tech.logo}`}
+                    alt={tech.name}
+                    width="23"
+                    height="23"
+                    loading="lazy"
+                    style={{ objectFit: "contain" }}
+                  />
+                  <span style={{ fontSize: "9px", color: "#52665a" }}>
+                    {tech.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div style={{ textAlign: "right", lineHeight: 1.8 }}>
+            <div style={{ fontWeight: 700, color: "#244b34" }}>
+              © 2026 LeafGuard AI
+            </div>
+            <div style={{ fontSize: "11px" }}>
+              ML-assisted screening · Not a definitive diagnosis
+            </div>
+            <div style={{ marginTop: "0px", fontSize: "11px" }}>
+              Built with <span style={{ color: "#e05261", fontSize: "14px" }}>♥</span>{" "}
+              for smarter agriculture
+            </div>
+          </div>
         </footer>
+
+
       </main>
     </div>
   );
