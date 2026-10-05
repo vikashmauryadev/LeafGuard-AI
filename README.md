@@ -52,8 +52,7 @@ LeafGuard-AI/
 git clone YOUR_GITHUB_REPOSITORY_URL
 cd LeafGuard-AI
 ```
-
-Replace `YOUR_GITHUB_REPOSITORY_URL` with your GitHub repository URL.
+ `https://github.com/vikashmauryadev/LeafGuard-AI` 
 
 ### 2. Set up the Python environment
 
@@ -126,4 +125,4 @@ The application has a working local prediction workflow, visual explanations, pr
 
 ## License
 
-A license has not yet been specified. Add a license before permitting reuse or redistribution.
+@Vikash Maurya 
