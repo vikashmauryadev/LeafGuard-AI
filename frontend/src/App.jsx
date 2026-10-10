@@ -1327,7 +1327,7 @@ function App() {
               ML-assisted screening · Not a definitive diagnosis
             </div>
             <div style={{ marginTop: "0px", fontSize: "11px" }}>
-              Built with <span style={{ color: "#e05261", fontSize: "14px" }}>♥</span>{" "}
+              Built<span style={{ color: "#e05261", fontSize: "14px" }}></span>{" "}
               for smarter agriculture
             </div>
           </div>
